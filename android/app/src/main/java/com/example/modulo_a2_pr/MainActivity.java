@@ -1,16 +1,30 @@
 package com.example.modulo_a2_pr;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import java.util.List;
 import io.flutter.embedding.android.FlutterActivity;
 import io.flutter.embedding.engine.FlutterEngine;
+import io.flutter.plugin.common.EventChannel;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 
 public class MainActivity extends FlutterActivity {
 
     String caminhoCanal = "com.example.modulo_a2_pr";
+    private BroadcastReceiver broadInternet;
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(broadInternet);
+    }
 
     @Override
     public void configureFlutterEngine(@NonNull FlutterEngine flutterEngine) {
@@ -40,5 +54,52 @@ public class MainActivity extends FlutterActivity {
             }
         });
 
+        new EventChannel(flutterEngine.getDartExecutor(), caminhoCanal + "/internet").setStreamHandler(new EventChannel.StreamHandler() {
+            @Override
+            public void onListen(Object arguments, EventChannel.EventSink events) {
+                events.success(verificarConexao());
+                broadInternet = new BroadcastReceiver() {
+                    @Override
+                    public void onReceive(Context context, Intent intent) {
+                        events.success(verificarConexao());
+                    }
+                };
+                registerReceiver(broadInternet, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+            }
+
+            @Override
+            public void onCancel(Object arguments) {
+
+            }
+        });
+
     }
+
+    private int verificarConexao() {
+
+        int conexao = 0;
+
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+
+        if (networkInfo != null) {
+
+            switch (networkInfo.getState()) {
+
+                case CONNECTED:
+                    conexao = 1;
+                    break;
+
+                default:
+                    conexao = 0;
+                break;
+
+            }
+
+        }
+
+        return conexao;
+
+    }
+
 }

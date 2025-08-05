@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:modulo_a2_pr/global/cores.dart';
 import 'package:modulo_a2_pr/global/variaveis.dart';
+import 'package:modulo_a2_pr/services/infos_dao.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -14,6 +15,18 @@ class _LoginPageState extends State<LoginPage> {
   String email = '', senha = '';
   TextEditingController emailController = TextEditingController(),
       senhaController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    inciar();
+  }
+
+  void inciar() async {
+    eventInternet.receiveBroadcastStream().listen((value) {
+      conexaoInternet = (value == 1);
+    });
+  }
 
   void validarLogin() async {
     email = emailController.text.toString().trim();
@@ -28,7 +41,12 @@ class _LoginPageState extends State<LoginPage> {
       tipoErroTalvez = 2;
     }
 
+    if (!conexaoInternet) {
+      tipoErroTalvez = 3;
+    }
+
     if (tipoErroTalvez == 0) {
+      await InfosDao().validarLogin(email, senha);
     } else {
       switch (tipoErroTalvez) {
         case 1:
@@ -40,6 +58,12 @@ class _LoginPageState extends State<LoginPage> {
         case 2:
           await methodChannel.invokeMethod('toast', [
             "Erro na senha",
+          ]);
+          break;
+
+        case 3:
+          await methodChannel.invokeMethod('toast', [
+            "Sem conexão com internet",
           ]);
           break;
       }
