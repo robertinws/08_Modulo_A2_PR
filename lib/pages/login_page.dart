@@ -24,10 +24,23 @@ class _LoginPageState extends State<LoginPage> {
       tipoErroTalvez = 1;
     }
 
+    if (senha.length < 6) {
+      tipoErroTalvez = 2;
+    }
+
     if (tipoErroTalvez == 0) {
     } else {
       switch (tipoErroTalvez) {
         case 1:
+          await methodChannel.invokeMethod('toast', [
+            "Erro no email",
+          ]);
+          break;
+
+        case 2:
+          await methodChannel.invokeMethod('toast', [
+            "Erro na senha",
+          ]);
           break;
       }
     }
@@ -59,6 +72,7 @@ class _LoginPageState extends State<LoginPage> {
                   Container(
                     decoration: BoxDecoration(color: corClara),
                     child: TextField(
+                      controller: emailController,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
                         hintText: 'Email',
@@ -69,6 +83,7 @@ class _LoginPageState extends State<LoginPage> {
                     decoration: BoxDecoration(color: corClara),
                     child: TextField(
                       obscureText: true,
+                      controller: senhaController,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
                         hintText: 'Senha',
@@ -93,7 +108,7 @@ class _LoginPageState extends State<LoginPage> {
                     width: double.infinity,
                     height: 50,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: validarLogin,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: corRoxoMedio,
                         foregroundColor: corClara,
