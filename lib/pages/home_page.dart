@@ -23,10 +23,10 @@ class _HomePageState extends State<HomePage> {
   }
 
   void logout() async {
-    await methodChannel.invokeMethod('token', [' ']);
+    await methodChannel.invokeMethod('salvarToken', [' ']);
     await methodChannel.invokeMethod('mantenhaConectado', [false]);
     usuario = '';
-    Navigator.of(context).pushReplacementNamed('/home');
+    Navigator.of(context).pushReplacementNamed('/');
   }
 
   @override
@@ -67,12 +67,7 @@ class _HomePageState extends State<HomePage> {
                   title: Text('Lista de escolas'),
                 ),
                 ListTile(onTap: () {}, title: Text('Mapa')),
-                ListTile(
-                  onTap: () {
-                    logout();
-                  },
-                  title: Text('Logout'),
-                ),
+                ListTile(onTap: logout, title: Text('Logout')),
               ],
             ),
           ],
