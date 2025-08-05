@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:modulo_a2_pr/global/variaveis.dart';
+
 class InfosDao {
   Future<void> validarLogin(String email, String senha) async {
     try {
@@ -20,7 +22,11 @@ class InfosDao {
         String resposta = await response
             .transform(utf8.decoder)
             .join();
-        String token = jsonDecode(resposta)['token'];
+        token = jsonDecode(resposta)['token'];
+        await methodChannel.invokeMethod('salvarToken', [token]);
+        usuario = jsonDecode(
+          await methodChannel.invokeMethod('token', [token]),
+        );
       } else {
         print('Error ${response.statusCode}');
       }

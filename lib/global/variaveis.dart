@@ -6,3 +6,4 @@ MethodChannel methodChannel = MethodChannel('$caminhoCanal/main');
 EventChannel eventInternet = EventChannel('$caminhoCanal/internet');
 String token = '';
 bool conexaoInternet = false;
+dynamic usuario = '';

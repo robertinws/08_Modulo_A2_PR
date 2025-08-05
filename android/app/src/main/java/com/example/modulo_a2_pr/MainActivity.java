@@ -4,8 +4,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Base64;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import java.util.List;
@@ -44,6 +46,47 @@ public class MainActivity extends FlutterActivity {
 
                             String mensagem = args.get(0).toString();
                             Toast.makeText(MainActivity.this, mensagem, Toast.LENGTH_SHORT).show();
+
+                        }
+
+                        break;
+
+                    case "token":
+
+                        if (args != null) {
+
+                            String token = args.get(0).toString();
+                            String[] divideToken = token.split("\\.");
+                            byte[] bytes = Base64.decode(divideToken[1], Base64.DEFAULT);
+                            result.success(new String(bytes));
+
+                        }
+
+                        break;
+
+                    case "mantenhaConectado":
+
+                        if (args != null) {
+
+                            boolean conectado = Boolean.parseBoolean(args.get(0).toString());
+
+                            SharedPreferences.Editor editor = getSharedPreferences("main", MODE_PRIVATE).edit();
+                            editor.putBoolean("conectado", conectado);
+                            editor.apply();
+                            result.success("sucesso");
+                        }
+
+                        break;
+
+                    case "salvarToken":
+
+                        if (args != null) {
+
+                            String token = args.get(0).toString();
+                            SharedPreferences.Editor editor = getSharedPreferences("main", MODE_PRIVATE).edit();
+                            editor.putString("token", token);
+                            editor.apply();
+                            result.success("sucesso");
 
                         }
 

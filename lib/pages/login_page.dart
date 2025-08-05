@@ -47,6 +47,13 @@ class _LoginPageState extends State<LoginPage> {
 
     if (tipoErroTalvez == 0) {
       await InfosDao().validarLogin(email, senha);
+      if (usuario.toString().isNotEmpty) {
+        Navigator.of(context).pushReplacementNamed('/home');
+      } else {
+        await methodChannel.invokeMethod('toast', [
+          "Email/Senha incorretos!",
+        ]);
+      }
     } else {
       switch (tipoErroTalvez) {
         case 1:
