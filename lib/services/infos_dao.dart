@@ -34,4 +34,26 @@ class InfosDao {
       print(e);
     }
   }
+
+  Future<void> receberMensagem() async {
+    try {
+      final HttpClient client = HttpClient();
+      final HttpClientRequest request = await client.getUrl(
+        Uri.parse(
+          'https://workspace.dinizeotecnologia.com.br/worldskills/A2/motd',
+        ),
+      );
+      final HttpClientResponse response = await request.close();
+      if (response.statusCode == 200) {
+        String jsonResponse = await response
+            .transform(utf8.decoder)
+            .join();
+        mensagemHome = jsonDecode(jsonResponse)['MOTD'];
+      } else {
+        print('Error ${response.statusCode}');
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
 }

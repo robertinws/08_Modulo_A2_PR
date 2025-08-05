@@ -48,6 +48,23 @@ class _LoginPageState extends State<LoginPage> {
     if (tipoErroTalvez == 0) {
       await InfosDao().validarLogin(email, senha);
       if (usuario.toString().isNotEmpty) {
+        if (mantenhaConectado) {
+          print('');
+          print('');
+          print('');
+          print('');
+          print('');
+
+          print('owjdow');
+          print('');
+          print('');
+          print('');
+          print('');
+          print('');
+          await methodChannel.invokeMethod('mantenhaConectado', [
+            true,
+          ]);
+        }
         Navigator.of(context).pushReplacementNamed('/home');
       } else {
         await methodChannel.invokeMethod('toast', [
@@ -129,10 +146,22 @@ class _LoginPageState extends State<LoginPage> {
                         onChanged: (value) {
                           setState(() {
                             mantenhaConectado = value!;
+                            print('');
+                            print('');
+                            print('');
+                            print('');
+                            print('');
+
+                            print('wdowdow');
+                            print('');
+                            print('');
+                            print('');
+                            print('');
+                            print('');
                           });
                         },
                       ),
-                      Text('Manhtenha-me conectado'),
+                      Text('Mantenha-me conectado'),
                     ],
                   ),
                   SizedBox(
