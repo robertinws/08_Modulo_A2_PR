@@ -71,7 +71,7 @@ class InfosDao {
             .transform(utf8.decoder)
             .join();
 
-        listEscolas = jsonDecode(jsonResponse);
+        listEscolas = jsonDecode(jsonResponse)['escolas'];
       } else {
         print('Error ${response.statusCode}');
       }
