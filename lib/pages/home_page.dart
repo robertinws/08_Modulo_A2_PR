@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:modulo_a2_pr/global/cores.dart';
+import 'package:modulo_a2_pr/global/funcoes.dart';
 import 'package:modulo_a2_pr/global/variaveis.dart';
 import 'package:modulo_a2_pr/services/infos_dao.dart';
 
@@ -14,19 +15,13 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    contexto = context;
     iniciar();
   }
 
   void iniciar() async {
     await InfosDao().receberMensagem();
     setState(() {});
-  }
-
-  void logout() async {
-    await methodChannel.invokeMethod('salvarToken', [' ']);
-    await methodChannel.invokeMethod('mantenhaConectado', [false]);
-    usuario = '';
-    Navigator.of(context).pushReplacementNamed('/');
   }
 
   @override
@@ -63,7 +58,10 @@ class _HomePageState extends State<HomePage> {
             Column(
               children: [
                 ListTile(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.of(context).pushNamed('/escolas');
+                  },
                   title: Text('Lista de escolas'),
                 ),
                 ListTile(onTap: () {}, title: Text('Mapa')),

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 bool mantenhaConectado = false;
@@ -8,3 +9,5 @@ String token = '';
 bool conexaoInternet = false;
 dynamic usuario = '';
 String mensagemHome = '';
+BuildContext? contexto;
+int telaAtual = 0;
