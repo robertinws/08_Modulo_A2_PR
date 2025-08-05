@@ -22,6 +22,7 @@ class _HomePageState extends State<HomePage> {
 
   void iniciar() async {
     await InfosDao().receberMensagem();
+    await InfosDao().listarEscolas();
     setState(() {});
   }
 

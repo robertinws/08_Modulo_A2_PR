@@ -56,4 +56,27 @@ class InfosDao {
       print(e);
     }
   }
+
+  Future<void> listarEscolas() async {
+    try {
+      final HttpClient client = HttpClient();
+      final HttpClientRequest request = await client.getUrl(
+        Uri.parse(
+          'https://workspace.dinizeotecnologia.com.br/worldskills/A2/school_list',
+        ),
+      );
+      final HttpClientResponse response = await request.close();
+      if (response.statusCode == 200) {
+        String jsonResponse = await response
+            .transform(utf8.decoder)
+            .join();
+
+        listEscolas = jsonDecode(jsonResponse);
+      } else {
+        print('Error ${response.statusCode}');
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
 }

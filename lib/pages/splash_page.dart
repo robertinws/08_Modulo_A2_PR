@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:modulo_a2_pr/global/variaveis.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -49,7 +48,6 @@ class _SplashPageState extends State<SplashPage> {
               opacity: entrada ? 1 : 0,
               duration: Duration(seconds: 1),
               curve: Curves.easeInOut,
-
               child: Image.asset(
                 height: 150,
                 'assets/images/logo.png',

@@ -86,31 +86,52 @@ class _EscolasPageState extends State<EscolasPage> {
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsetsGeometry.only(right: 20),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Text(
-                              'Avaliação',
-                              style: TextStyle(
-                                color: corEscuro,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: Text(
+                      'Avaliação',
+                      style: TextStyle(
+                        color: corEscuro,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
-                  ListView.builder(
-                    itemCount: 4,
-                    itemBuilder: (context, index) {
-                      return ListTile(title: Text('dowjowjo'));
-                    },
+                  SizedBox(
+                    width: double.infinity,
+                    height: 100,
+                    child: ListView.builder(
+                      itemCount: 4,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: EdgeInsetsGeometry.only(
+                            bottom: 10,
+                          ),
+                          child: ListTile(
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadiusGeometry.circular(10),
+                            ),
+                            tileColor: const Color.fromARGB(
+                              255,
+                              216,
+                              216,
+                              216,
+                            ),
+                            title: Text('Escola A'),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: List.generate(3, (index) {
+                                return Icon(
+                                  Icons.star,
+                                  color: Colors.amber,
+                                );
+                              }),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
                   ),
                 ],
               ),

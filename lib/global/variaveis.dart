@@ -11,3 +11,4 @@ dynamic usuario = '';
 String mensagemHome = '';
 BuildContext? contexto;
 int telaAtual = 0;
+List<dynamic> listEscolas = [];
