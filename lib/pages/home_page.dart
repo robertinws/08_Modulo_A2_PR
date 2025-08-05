@@ -60,6 +60,12 @@ class _HomePageState extends State<HomePage> {
             Column(
               children: [
                 ListTile(
+                  tileColor: corRoxoClaro,
+                  textColor: corClara,
+                  onTap: () {},
+                  title: Text('Home'),
+                ),
+                ListTile(
                   onTap: () {
                     Navigator.pop(context);
                     Navigator.of(context).pushNamed('/escolas');

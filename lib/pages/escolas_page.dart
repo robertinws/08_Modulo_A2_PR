@@ -52,6 +52,13 @@ class _EscolasPageState extends State<EscolasPage> {
             Column(
               children: [
                 ListTile(
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                  },
+                  title: Text('Home'),
+                ),
+                ListTile(
                   tileColor: corRoxoClaro,
                   textColor: corClara,
                   onTap: () {},
