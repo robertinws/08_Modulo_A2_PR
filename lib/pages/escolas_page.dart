@@ -14,6 +14,7 @@ class _EscolasPageState extends State<EscolasPage> {
   @override
   void initState() {
     super.initState();
+    telaAtual = 1;
     contexto = context;
   }
 
@@ -51,10 +52,9 @@ class _EscolasPageState extends State<EscolasPage> {
             Column(
               children: [
                 ListTile(
-                  onTap: () {
-                    Navigator.pop(context);
-                    Navigator.of(context).pushNamed('/escolas');
-                  },
+                  tileColor: corRoxoClaro,
+                  textColor: corClara,
+                  onTap: () {},
                   title: Text('Lista de escolas'),
                 ),
                 ListTile(onTap: () {}, title: Text('Mapa')),
@@ -68,6 +68,55 @@ class _EscolasPageState extends State<EscolasPage> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         scrolledUnderElevation: 0,
+      ),
+      body: SafeArea(
+        child: SizedBox(
+          width: double.infinity,
+          child: Padding(
+            padding: EdgeInsetsGeometry.all(20),
+            child: SingleChildScrollView(
+              child: Column(
+                spacing: 20,
+                children: [
+                  Text(
+                    'Lista de escolas',
+                    style: TextStyle(
+                      color: corEscuro,
+                      fontSize: 35,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsetsGeometry.only(right: 20),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text(
+                              'Avaliação',
+                              style: TextStyle(
+                                color: corEscuro,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  ListView.builder(
+                    itemCount: 4,
+                    itemBuilder: (context, index) {
+                      return ListTile(title: Text('dowjowjo'));
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }

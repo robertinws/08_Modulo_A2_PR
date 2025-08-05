@@ -16,6 +16,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     contexto = context;
+    telaAtual = 0;
     iniciar();
   }
 
