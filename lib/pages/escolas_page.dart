@@ -114,6 +114,7 @@ class _EscolasPageState extends State<EscolasPage> {
                       return Padding(
                         padding: EdgeInsetsGeometry.only(bottom: 10),
                         child: ListTile(
+                          onTap: () {},
                           shape: RoundedRectangleBorder(
                             borderRadius:
                                 BorderRadiusGeometry.circular(10),
