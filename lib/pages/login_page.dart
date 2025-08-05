@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:modulo_a2_pr/global/cores.dart';
@@ -26,6 +28,19 @@ class _LoginPageState extends State<LoginPage> {
     eventInternet.receiveBroadcastStream().listen((value) {
       conexaoInternet = (value == 1);
     });
+    bool conectado = await methodChannel.invokeMethod(
+      'mantenhaConectadoReceber',
+    );
+    if (conectado) {
+      bool validado = await methodChannel.invokeMethod('biometria');
+      if (validado) {
+        token = await methodChannel.invokeMethod('receberToken');
+        usuario = jsonDecode(
+          await methodChannel.invokeMethod('token', [token]),
+        );
+        Navigator.of(context).pushReplacementNamed('/home');
+      }
+    }
   }
 
   void validarLogin() async {
@@ -49,18 +64,6 @@ class _LoginPageState extends State<LoginPage> {
       await InfosDao().validarLogin(email, senha);
       if (usuario.toString().isNotEmpty) {
         if (mantenhaConectado) {
-          print('');
-          print('');
-          print('');
-          print('');
-          print('');
-
-          print('owjdow');
-          print('');
-          print('');
-          print('');
-          print('');
-          print('');
           await methodChannel.invokeMethod('mantenhaConectado', [
             true,
           ]);
@@ -146,18 +149,6 @@ class _LoginPageState extends State<LoginPage> {
                         onChanged: (value) {
                           setState(() {
                             mantenhaConectado = value!;
-                            print('');
-                            print('');
-                            print('');
-                            print('');
-                            print('');
-
-                            print('wdowdow');
-                            print('');
-                            print('');
-                            print('');
-                            print('');
-                            print('');
                           });
                         },
                       ),

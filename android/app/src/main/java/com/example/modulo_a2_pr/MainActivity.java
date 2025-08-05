@@ -2,11 +2,16 @@ package com.example.modulo_a2_pr;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.hardware.biometrics.BiometricManager;
+import android.hardware.biometrics.BiometricPrompt;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
+import android.os.CancellationSignal;
 import android.util.Base64;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -21,6 +26,8 @@ public class MainActivity extends FlutterActivity {
 
     String caminhoCanal = "com.example.modulo_a2_pr";
     private BroadcastReceiver broadInternet;
+    private CancellationSignal cancellationSignal;
+    private boolean biometriaValidada = false;
 
     @Override
     protected void onDestroy() {
@@ -78,6 +85,14 @@ public class MainActivity extends FlutterActivity {
 
                         break;
 
+                    case "mantenhaConectadoReceber":
+
+                        SharedPreferences sharedPreferences = getSharedPreferences("main", MODE_PRIVATE);
+                        boolean conectado = sharedPreferences.getBoolean("conectado", false);
+                        result.success(conectado);
+
+                        break;
+
                     case "salvarToken":
 
                         if (args != null) {
@@ -92,7 +107,58 @@ public class MainActivity extends FlutterActivity {
 
                         break;
 
-                        
+                    case "receberToken":
+
+                        SharedPreferences sharedPreferences1 = getSharedPreferences("main", MODE_PRIVATE);
+                        String token = sharedPreferences1.getString("token", "");
+                        result.success(token);
+
+                        break;
+
+                    case "biometria":
+
+                        cancellationSignal = new CancellationSignal();
+                        biometriaValidada = false;
+
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                            BiometricPrompt biometricPrompt = new BiometricPrompt.Builder(getContext()).setTitle("Validação biométrica").setDescription("Confirme sua biometria para fazer login").setNegativeButton("Cancelar", getMainExecutor(), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            }).build();
+
+                            biometricPrompt.authenticate(cancellationSignal, getMainExecutor(), new BiometricPrompt.AuthenticationCallback() {
+                                @Override
+                                public void onAuthenticationError(int errorCode, CharSequence errString) {
+                                    super.onAuthenticationError(errorCode, errString);
+                                    cancellationSignal.cancel();
+                                }
+
+                                @Override
+                                public void onAuthenticationSucceeded(BiometricPrompt.AuthenticationResult result) {
+                                    super.onAuthenticationSucceeded(result);
+                                    biometriaValidada = true;
+                                    cancellationSignal.cancel();
+                                }
+
+                                @Override
+                                public void onAuthenticationFailed() {
+                                    super.onAuthenticationFailed();
+                                    cancellationSignal.cancel();
+                                }
+                            });
+
+                            cancellationSignal.setOnCancelListener(new CancellationSignal.OnCancelListener() {
+                                @Override
+                                public void onCancel() {
+                                    result.success(biometriaValidada);
+                                }
+                            });
+
+                        }
+
+                        break;
 
                 }
 
